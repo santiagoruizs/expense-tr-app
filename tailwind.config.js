@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     darkMode: ["class"],
-    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    content: ['./pages/**/*.{ts,tsx}',
+			'./components/**/*.{ts,tsx}',
+			'./app/**/*.{ts,tsx}',
+			'./src/**/*.{ts,tsx}',],
   theme: {
   	extend: {
   		borderRadius: {

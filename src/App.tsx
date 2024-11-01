@@ -3,7 +3,7 @@ import './App.css'
 import Layout from './pages/Layout'
 import Home from './pages/Home';
 import Account from './pages/Account';
-
+import { ThemeProvider } from "@/components/theme-provider"
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Layout />}>
@@ -15,7 +15,9 @@ const router = createBrowserRouter(createRoutesFromElements(
 function App() {
 
   return (
-    <RouterProvider router={router} /> 
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme' >
+      <RouterProvider router={router} /> 
+    </ThemeProvider>
   )
 }
 

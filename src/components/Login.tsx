@@ -8,24 +8,54 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { LoaderCircle } from 'lucide-react';
-
+import { userLogin } from "@/api/api";
 import { FormEvent, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-// import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 const Login = () => {
-//   const { toast } = useToast()
-//   const { setIsLoggedIn } = useOutletContext<any>();
+  const { toast } = useToast()
+  const { setIsLoggedIn } = useOutletContext<any>();
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-//   const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
-    //setIsLoading(true)
+    setIsLoading(true)
     event.preventDefault();  
     const payload = {username, password}
     console.log("Logging in with:", {payload});
+    try {
+      const res = await userLogin(username, password)
+      const data = await res.json()
+      if(!res.ok){
+        toast({
+          variant: "destructive",
+          title: "Log In",
+          description: data.message,
+        })
+        throw new Error(data.message)
+      }
+      console.log(data)
+      toast({
+        title: "Log In",
+        description: data.message,
+      })
+      setIsLoading(false)
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('userId', data.id);
+      navigate('/account')
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: "Log In",
+        description: "There was an error in the request"
+      })
+      console.error('Error:', error)
+      setIsLoading(false)
+    }
   }
 
   return (

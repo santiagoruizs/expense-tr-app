@@ -7,18 +7,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useToast } from "@/components/ui/use-toast";
 import { LoaderCircle } from 'lucide-react';
-
+import { userSignup } from "@/api/api";
 
 const Signup = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  
-  
   const [confirmPassword, setConfirmPassword] = useState('')
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -31,8 +28,23 @@ const Signup = () => {
     if (password === confirmPassword){
       const payload = {username, email, password}
       console.log("Signing up with:", {payload});
-    }
-    
+      try {
+        const res = await userSignup(username, email, password)
+        const data = await res.json()
+        if(!res.ok){
+          throw new Error(data.message)
+        }
+        console.log(data)
+        navigate('/home')
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+        console.error('Error:', error);
+      }
+    }else{
+      console.log('Password do not match')
+      setIsLoading(false)
+    }  
   }
   return (
     <div className="flex-auto flex items-center justify-center">
