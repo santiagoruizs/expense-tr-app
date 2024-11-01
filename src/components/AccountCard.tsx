@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -13,10 +12,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { WalletMinimal } from "lucide-react";
-import CountUp from "react-countup";
+// import { WalletMinimal } from "lucide-react";
+// import CountUp from "react-countup";
 
-import { TrendingUp } from "lucide-react"
+// import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 export const description = "A donut chart with text"
@@ -53,10 +52,15 @@ const chartConfig = {
     color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig
-const AccountCard = () => {
-  const totalamount = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.amount, 0)
-  }, [])
+
+interface AccountCardProps {
+  balance: number;
+}
+
+const AccountCard: React.FC<AccountCardProps>  = ({balance}) => {
+  // const totalamount = React.useMemo(() => {
+  //   return chartData.reduce((acc, curr) => acc + curr.amount, 0)
+  // }, [])
 
   return (
     <Card className="flex flex-col w-10/12 m-auto">
@@ -78,7 +82,8 @@ const AccountCard = () => {
               data={chartData}
               dataKey="amount"
               nameKey="category"
-              innerRadius={60}
+              outerRadius={100}
+              innerRadius={70}
               strokeWidth={5}
             >
               <Label
@@ -96,7 +101,7 @@ const AccountCard = () => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         > 
-                          € {totalamount.toLocaleString()}
+                          € {balance}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

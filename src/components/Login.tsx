@@ -45,7 +45,7 @@ const Login = () => {
       setIsLoading(false)
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', data.username);
-      localStorage.setItem('userId', data.id);
+      localStorage.setItem('userId', data.user_id);
       navigate('/account')
     } catch (error) {
       toast({

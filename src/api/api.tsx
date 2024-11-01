@@ -27,3 +27,28 @@ export const userSignup = async (username:string, email:string, password:string)
     })
     return response
 }
+
+export const getCategories = async () => {
+    console.log("Getting categories");
+    const response = await fetch(import.meta.env.VITE_API_URL +'/movements/categories',
+        {
+          method : 'GET',
+          headers : {
+            'Content-Type': 'application/json',
+          }
+        })
+    return response
+}
+
+export const getUserBalance = async (user_id : number) => {
+
+    console.log("Geting user balance");
+    const response = await fetch(import.meta.env.VITE_API_URL +'/movements/balance/'+user_id,
+        {
+          method : 'GET',
+          headers : {
+            'Content-Type': 'application/json',
+          },
+        })
+    return response
+}
