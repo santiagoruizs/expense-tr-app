@@ -52,3 +52,46 @@ export const getUserBalance = async (user_id : number) => {
         })
     return response
 }
+
+export const getUserMovements = async (user_id : number) => {
+
+  console.log("Geting user expenses");
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/'+user_id,
+      {
+        method : 'GET',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+      })
+  return response
+}
+
+export const addUserExpense = async (user_id : number, amount:number, category_id:number, description:string) => {
+  const payload = {user_id, amount, category_id, description, expense_date: null}
+  // console.log("Adding Expense with payload:");
+  // console.log(payload)
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/expense',
+      {
+        method : 'POST',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(payload)
+      })
+  return response
+}
+
+export const addUserIncome = async (user_id : number, amount:number, category_id:number, description:string) => {
+  const payload = {user_id, amount, category_id, description, expense_date: null}
+  // console.log("Adding Income with payload:");
+  // console.log(payload)
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/income',
+      {
+        method : 'POST',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(payload)
+      })
+  return response
+}

@@ -26,7 +26,7 @@ const chartData = [
   { category: "transport", amount: 173, fill: "var(--color-transport)" },
   { category: "other", amount: 190, fill: "var(--color-other)" },
 ]
-
+const movementsData = []
 const chartConfig = {
   amount: {
     label: "amount",
@@ -55,13 +55,30 @@ const chartConfig = {
 
 interface AccountCardProps {
   balance: number;
+  categories: any;
+  movements: any
 }
-
-const AccountCard: React.FC<AccountCardProps>  = ({balance}) => {
+let chartCfg = {amount: {
+  label: "amount",
+}} satisfies ChartConfig
+const AccountCard: React.FC<AccountCardProps>  = ({balance, categories, movements}) => {
   // const totalamount = React.useMemo(() => {
   //   return chartData.reduce((acc, curr) => acc + curr.amount, 0)
   // }, [])
+  // React.useEffect(() => {
+  //   if(categories){
+  //     categories.map((c, i) => {
+  //        chartCfg[c.name] = {label: c.name, color: "hsl(var(--chart-"+i+"))"}
+  //     })
+  //   }
+  //   if(movements){
+  //     movements.map(m => {
+  //       if (m.type === 'expense'){
+  //       movementsData.push({category: m.name, amount: parseFloat(m.amount), fill: `var(--color-${m.name})`})
+  //     }
+  //     })
 
+  // },[categories.length, movements.length])
   return (
     <Card className="flex flex-col w-10/12 m-auto">
       <CardHeader className="items-center pb-0">
@@ -70,7 +87,7 @@ const AccountCard: React.FC<AccountCardProps>  = ({balance}) => {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
-          config={chartConfig}
+          config={categories}
           className="mx-auto aspect-square max-h-[250px]"
         >
           <PieChart>
@@ -79,7 +96,7 @@ const AccountCard: React.FC<AccountCardProps>  = ({balance}) => {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
+              data={movements}
               dataKey="amount"
               nameKey="category"
               outerRadius={100}
@@ -101,7 +118,7 @@ const AccountCard: React.FC<AccountCardProps>  = ({balance}) => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         > 
-                          € {balance}
+                          {balance}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
