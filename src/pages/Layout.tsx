@@ -1,6 +1,9 @@
 import Header from '@/components/Header'
 import { Outlet, useNavigate } from 'react-router'
 import { useState, useEffect } from 'react';
+import { SideBar } from '@/components/SideBar';
+import { AuthProvider } from '@/context/AuthContext';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 
 const Layout = () => {
@@ -17,10 +20,16 @@ const Layout = () => {
   }, []);
 
   return (
-    <div className='flex flex-col items-center min-h-screen w-screen bg-background text-foreground border-2'>
-        <Header isLoggedIn={isLoggedIn}  setIsLoggedIn={setIsLoggedIn}/>
-        <Outlet context={{setIsLoggedIn, isLoggedIn}} />
-    </div>
+        <AuthProvider > 
+          <SidebarProvider defaultOpen={false}> 
+              <SideBar /> 
+              <div className='flex flex-col items-center h-screen w-full bg-background text-foreground'>
+                  <Header />     
+                  <Outlet context={{setIsLoggedIn, isLoggedIn}} />
+              </div>
+          </SidebarProvider> 
+        </AuthProvider>
+    
   )
 }
 

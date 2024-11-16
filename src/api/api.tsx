@@ -1,6 +1,6 @@
 export const userLogin = async (username : string, password: string) => {
     const payload = {username, password}
-    console.log("Logging in with:", {payload});
+    // console.log("Logging in with:", {payload});
     const response = await fetch(import.meta.env.VITE_API_URL +'/auth/login',
         {
           method : 'POST',
@@ -15,7 +15,7 @@ export const userLogin = async (username : string, password: string) => {
 export const userSignup = async (username:string, email:string, password:string) => {
 
     const payload = {username, email, password}
-    console.log("Signing up with:", {payload});
+    // console.log("Signing up with:", {payload});
 
     const response = await fetch(import.meta.env.VITE_API_URL +'/auth/signup',
     {
@@ -29,7 +29,7 @@ export const userSignup = async (username:string, email:string, password:string)
 }
 
 export const getCategories = async () => {
-    console.log("Getting categories");
+    // console.log("Getting categories");
     const response = await fetch(import.meta.env.VITE_API_URL +'/movements/categories',
         {
           method : 'GET',
@@ -42,7 +42,7 @@ export const getCategories = async () => {
 
 export const getUserBalance = async (user_id : number) => {
 
-    console.log("Geting user balance");
+    // console.log("Geting user balance");
     const response = await fetch(import.meta.env.VITE_API_URL +'/movements/balance/'+user_id,
         {
           method : 'GET',
@@ -55,7 +55,7 @@ export const getUserBalance = async (user_id : number) => {
 
 export const getUserMovements = async (user_id : number) => {
 
-  console.log("Geting user expenses");
+  // console.log("Geting user expenses");
   const response = await fetch(import.meta.env.VITE_API_URL +'/movements/'+user_id,
       {
         method : 'GET',
@@ -92,6 +92,45 @@ export const addUserIncome = async (user_id : number, amount:number, category_id
           'Content-Type': 'application/json',
         },
         body : JSON.stringify(payload)
+      })
+  return response
+}
+
+export const getDayUserExpenses = async (user_id : number) => {
+
+  // console.log("Geting user expenses");
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/expenses/day/'+user_id,
+      {
+        method : 'GET',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+      })
+  return response
+}
+
+export const getWeekUserExpenses = async (user_id : number) => {
+
+  // console.log("Geting user expenses");
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/expenses/week/'+user_id,
+      {
+        method : 'GET',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+      })
+  return response
+}
+
+export const getMonthUserExpenses = async (user_id : number) => {
+
+  // console.log("Geting user expenses");
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/expenses/month/'+user_id,
+      {
+        method : 'GET',
+        headers : {
+          'Content-Type': 'application/json',
+        },
       })
   return response
 }

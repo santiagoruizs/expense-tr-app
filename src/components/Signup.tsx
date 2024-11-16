@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { LoaderCircle } from 'lucide-react';
 import { userSignup } from "@/api/api";
 
-const Signup = () => {
+const Signup = ({setLoginSignup}: any) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -35,7 +35,7 @@ const Signup = () => {
           throw new Error(data.message)
         }
         console.log(data)
-        navigate('/home')
+        setLoginSignup(false)
         setIsLoading(false)
       } catch (error) {
         setIsLoading(false)

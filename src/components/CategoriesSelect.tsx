@@ -16,7 +16,7 @@ export function CategoriesSelect({categories, setCategoryId, type}: any) {
       <SelectTrigger className="">
         <SelectValue placeholder="Select a Category" />
       </SelectTrigger>
-      <SelectContent className="bg-white">
+      <SelectContent>
         {categories && categories.map(c => c.type === type &&(<SelectItem value={c.category_id}>{c.name}</SelectItem>))}  
       </SelectContent>
     </Select>

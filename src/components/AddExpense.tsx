@@ -43,6 +43,9 @@ const AddExpense = ({categories, handleAddExpense, userId}:any) => {
               {/* <DialogClose asChild> */}
                 <Button disabled = {amount === '' || isLoading} onClick={() => {
                   handleAddExpense(userId, amount, categoryId, description)
+                  setAmount('')
+                  setDescription('')
+                  setCategoryId(null)
                   setOpen(false)}}>
                 {isLoading && <LoaderCircle className="h-4 w-4 mx-2 animate-spin"/>}
                 {!isLoading && "Add Expense"}

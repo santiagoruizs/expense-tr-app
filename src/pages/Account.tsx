@@ -2,7 +2,7 @@ import AccountCard from '@/components/AccountCard'
 import AddExpense from '@/components/AddExpense'
 import AddIncome from '@/components/AddIncome'
 
-import { getUserBalance, getCategories, getUserMovements, addUserExpense, addUserIncome } from '@/api/api'
+import { getUserBalance, getCategories, addUserExpense, addUserIncome, getDayUserExpenses, getWeekUserExpenses, getMonthUserExpenses } from '@/api/api'
 import { useEffect, useState } from 'react'
 const Account = () => {
   const [userId, setUserId] = useState(null)
@@ -12,11 +12,14 @@ const Account = () => {
                                                 }} )
   const [movementsChart, setMovementsChart] = useState([])
   const [categories, setCategories] = useState([])
-  const [movements, setMovements] = useState([])
+  const [expensesSum, setExpensesSum] = useState({
+                                                  'day': [],
+                                                  'week': [],
+                                                  'month': []
+                                                  })
   const [refresh, setRefresh] = useState(false)
 
   const handleAddExpense  =  async (user_id : number, amount:number, category_id:number, description:string) => {
-    //console.log('A')
     //console.log({user_id, amount, category_id, description})
     const response = await addUserExpense(user_id, amount, category_id, description)
     const data = await response.json()
@@ -58,40 +61,29 @@ const Account = () => {
       }
     }
     const getMovements = async (userId:number) => {
-      
-      const response = await getUserMovements(userId)
-      const mvm = await response.json()
-      setMovements(mvm)
-      //console.log(mvm)
-      if(mvm){
-        const groupedSums = mvm.reduce((acc, transaction) => {
-            const { name, amount, type } = transaction;
-            
-            if (type === 'expense'){
-            // Initialize the category in the accumulator if not already present
-            if (!acc[name]) {
-                acc[name] = 0;
-            }
-            // Add the amount to the appropriate category
-            acc[name] += parseFloat(amount);
-          }
-            return acc;
-        }, {});
-        
-        //console.log(groupedSums);
-        const groupedSumsKeys = Object.keys(groupedSums)
-        const formatedGroupedSums = groupedSumsKeys.map(g => {
-          //console.log({category: g, amount:groupedSums[g], fill:  `var(--color-${g})`})
-          return {category: g, amount:groupedSums[g], fill:  `var(--color-${g})`}
-        })
-        //console.log(formatedGroupedSums)
-        setMovementsChart(formatedGroupedSums)
-        // setMovementsChart(mvm.map((m: { type: string; name: any; amount: string }) => {
-        //   if(m.type === 'expense'){
-        //     return {category: m.name, amount: parseFloat(m.amount), fill: `var(--color-${m.name})`}
-        //   }
-        // }))
-      }
+      const resDay = await getDayUserExpenses(userId)
+      const resWeek = await getWeekUserExpenses(userId)
+      const resMonth = await getMonthUserExpenses(userId)
+
+      const day = await resDay.json()
+      const week = await resWeek.json()
+      const month = await resMonth.json()
+
+      const formatedDay = day.map(d => {
+        return {category: d.name, amount: parseFloat(d.sum), fill:  `var(--color-${d.name})`}
+      })
+      const formatedWeek = week.map(d => {
+        return {category: d.name, amount: parseFloat(d.sum), fill:  `var(--color-${d.name})`}
+      })
+      const formatedMonth = month.map(d => {
+        return {category: d.name, amount: parseFloat(d.sum), fill:  `var(--color-${d.name})`}
+      })
+
+      setExpensesSum({
+        'day': formatedDay,
+        'week': formatedWeek,
+        'month': formatedMonth
+      })
     }
     const userId = localStorage.getItem('userId') 
     const userIdInt = parseInt(userId ? userId : '0')
@@ -107,9 +99,9 @@ const Account = () => {
   },[refresh])
 
   return (
-    <div className='w-11/12 sm:px-10 sm:w-[600px] pt-[100px] bg-background flex flex-col'>
-      <AccountCard balance={balance} categories={categoriesChart} movements={movementsChart}/>
-      <div className='flex flex-row items-center justify-center mt-5'>
+    <div className='flex-1 flex flex-col gap-5 w-11/12 sm:px-10 sm:w-[600px] items-center justify-center'>
+      <AccountCard balance={balance} categories={categoriesChart} movements={movementsChart} expenses = {expensesSum}/>
+      <div className='flex flex-row items-center justify-center'>
         <AddExpense categories={categories} handleAddExpense={handleAddExpense} userId={userId}/>
         <AddIncome categories={categories} handleAddIncome={handleAddIncome} userId={userId}/>
       </div>

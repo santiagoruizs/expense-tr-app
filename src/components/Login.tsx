@@ -12,6 +12,7 @@ import { userLogin } from "@/api/api";
 import { FormEvent, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast"
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
   const { toast } = useToast()
@@ -19,6 +20,7 @@ const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
@@ -43,10 +45,7 @@ const Login = () => {
         description: data.message,
       })
       setIsLoading(false)
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('userId', data.user_id);
-      navigate('/account')
+      login(data.username, data.user_id)
     } catch (error) {
       toast({
         variant: 'destructive',

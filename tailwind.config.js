@@ -58,9 +58,38 @@ export default {
   				'2': 'hsl(var(--chart-2))',
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
+  				'5': 'hsl(var(--chart-5))',
+  				'food': 'hsl(var(--chart-food))',
+  				'transportation': 'hsl(var(--chart-transportation))',
+  				'groceries': 'hsl(var(--chart-groceries))',
+  				'rent': 'hsl(var(--chart-rent))',
+  				'shopping': 'hsl(var(--chart-shopping))',				
+  				'salary': 'hsl(var(--chart-salary))',				
+  				'transfer': 'hsl(var(--chart-transfer))'				
   			}
-  		}
+  		},
+		keyframes: {
+		typing: {
+			"0%": {
+			width: "0%",
+			visibility: "hidden"
+			},
+			"100%": {
+			width: "100%"
+			}  
+		},
+		blink: {
+			"50%": {
+			borderColor: "transparent"
+			},
+			"100%": {
+			borderColor: "white"
+			}  
+		}
+		},
+		animation: {
+		typing: "typing 2s steps(20) infinite alternate, blink .7s infinite"
+		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

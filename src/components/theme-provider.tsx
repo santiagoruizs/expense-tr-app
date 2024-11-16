@@ -32,7 +32,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement
-    console.log('change')
+    //console.log('change')
     root.classList.remove("light", "dark")
 
     if (theme === "system") {
@@ -68,6 +68,6 @@ export const useTheme = () => {
 
   if (context === undefined)
     throw new Error("useTheme must be used within a ThemeProvider")
-  console.log(context)
+  //console.log(context)
   return context
 }
