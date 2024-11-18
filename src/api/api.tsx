@@ -134,3 +134,32 @@ export const getMonthUserExpenses = async (user_id : number) => {
       })
   return response
 }
+
+
+export const editExpense = async (expense_id:number, category_id:number, amount:number, description:String) => {
+  const payload = {expense_id, amount, category_id, description}
+  // console.log("Geting user expenses");
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/expense/'+expense_id,
+      {
+        method : 'PUT',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+  return response
+}
+
+export const editIncome = async (income_id:number, category_id:number, amount:number, description:String) => {
+  const payload = {income_id, amount, category_id, description}
+  // console.log("Geting user expenses");
+  const response = await fetch(import.meta.env.VITE_API_URL +'/movements/income/'+income_id,
+      {
+        method : 'PUT',
+        headers : {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+  return response
+}

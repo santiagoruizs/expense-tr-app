@@ -5,16 +5,21 @@ import {   PencilIcon, ReceiptEuro, Utensils, ShoppingCart, ShoppingBasket, Bank
 import { Separator } from '@radix-ui/react-separator';
 import EditRecord from './EditRecord';
 interface RecordProps{
+  id: any;
   amount: string;
   datetime: string;
   description: string;
   name: string;
+  categoryId: any;
   type: string;
+  categories: any;
+  setRefresh:any;
 }
-const Record:React.FC<RecordProps> = ({amount, datetime, description, name, type}) => {
+const Record:React.FC<RecordProps> = ({id, amount, datetime, description, name, categoryId, type, categories, setRefresh}) => {
 
   let date = new Date(datetime)
   let formattedDate = date.toDateString() 
+  //console.log(categoryId)
   return (
     <div className='group flex w-full items-center justify-around pl-4'>
       <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3`} style={{ backgroundColor: `hsl(var(--chart-${name}))` }}>
@@ -38,7 +43,7 @@ const Record:React.FC<RecordProps> = ({amount, datetime, description, name, type
           <Separator />
         </div>
         <div className='w-8 h-8  hover:bg-muted rounded-full flex items-center justify-center ml-3'>
-        <EditRecord amount ={amount} description = {description} name={name} type = {type}/>
+        <EditRecord id = {id} amount ={amount} description = {description} name={name} categoryId={categoryId} type = {type} categories={categories} setRefresh={setRefresh}/>
       </div>
     </div>
   )
